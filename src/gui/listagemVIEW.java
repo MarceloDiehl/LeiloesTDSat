@@ -1,4 +1,8 @@
+package gui;
 
+
+import logic.ProdutosDTO;
+import logic.ProdutosDAO;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 

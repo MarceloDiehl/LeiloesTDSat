@@ -1,3 +1,5 @@
+package logic;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +24,7 @@ public class conectaDAO {
         
         try {
         
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=Garcom@2");
             
         } catch (SQLException erro){
             JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
