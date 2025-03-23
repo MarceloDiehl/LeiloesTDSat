@@ -8,11 +8,12 @@ package logic;
  *
  * @author Adm
  */
-import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class ProdutosDAO {
 
@@ -31,7 +32,7 @@ public class ProdutosDAO {
             PreparedStatement stmt = this.conn.prepareStatement(sql);
             stmt.setString(1, produto.getNome());
             stmt.setInt(2, produto.getValor());
-            stmt.setString(3, produto.getStatus());            
+            stmt.setString(3, produto.getStatus());
             stmt.execute();
 
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
@@ -42,8 +43,22 @@ public class ProdutosDAO {
 
     }
 
-    public ArrayList<ProdutosDTO> listarProdutos() {
-
+     public ArrayList<ProdutosDTO> listarProdutos(Connection conn) { 
+        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+        String sql = "SELECT * FROM produtos";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet resultset = stmt.executeQuery()) {
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+                listagem.add(produto);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar produtos: " + e.getMessage());
+        }
         return listagem;
     }
 

@@ -235,20 +235,20 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String nome = txtNome.getText();
-        Integer valor = Integer.parseInt(txtValor.getText());
         String status = "à Venda";
+        String strValor;
 
-        
         //Teste valor:
-        String strValor = txtValor.getText();
+        strValor = txtValor.getText();
         boolean strTesteValor = strValor.matches("\\d+");
+        
 
-        if (nome.isEmpty() || valor == null) {
+        if (nome.isEmpty() || strValor.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos!");
-        } else if (strTesteValor == true) {
+        } else if (strTesteValor == true && nome !="") {
             ProdutosDTO p = new ProdutosDTO();
             p.setNome(nome);
-            p.setValor(valor);
+            p.setValor(Integer.parseInt(strValor));
             p.setStatus(status);
 
             ProdutosDAO pDAO = new ProdutosDAO();
