@@ -4,6 +4,14 @@
  */
 package gui;
 
+import java.sql.Connection;
+import logic.ProdutosDTO;
+import logic.ProdutosDAO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import logic.conectaDAO;
+
 /**
  *
  * @author Marcelo
@@ -15,6 +23,37 @@ public class vendasVIEW extends javax.swing.JFrame {
      */
     public vendasVIEW() {
         initComponents();
+        listarProdutosVendidos();
+    }
+
+    private void listarProdutosVendidos() {
+        Connection conn = null;
+        try {
+            conn = new conectaDAO().connectDB();
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            DefaultTableModel model = (DefaultTableModel) tblVendidos.getModel();
+            model.setNumRows(0);
+
+            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendidos(conn);
+            for (ProdutosDTO produto : listagem) {
+                model.addRow(new Object[]{
+                    produto.getId(),
+                    produto.getNome(),
+                    produto.getValor(),
+                    produto.getStatus()
+                });
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar produtos: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                }
+            }
+        }
     }
 
     /**
